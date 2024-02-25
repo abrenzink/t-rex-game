@@ -14,22 +14,22 @@ var gameOver, restart;
 
 
 function preload(){
-  trex_correndo =   loadAnimation("trex1.png","trex2.png","trex3.png");
-  trex_colidiu = loadAnimation("trex_collided.png");
+  trex_correndo =   loadAnimation("assets/trex1.png","assets/trex2.png","assets/trex3.png");
+  trex_colidiu = loadAnimation("assets/trex_collided.png");
   
-  imagemSolo = loadImage("ground2.png");
+  imagemSolo = loadImage("assets/ground2.png");
   
-  imgNuvem = loadImage("cloud.png");
+  imgNuvem = loadImage("assets/cloud.png");
   
-  cacto1 = loadImage("obstacle1.png");
-  cacto2 = loadImage("obstacle2.png");
-  cacto3 = loadImage("obstacle3.png");
-  cacto4 = loadImage("obstacle4.png");
-  cacto5 = loadImage("obstacle5.png");
-  cacto6 = loadImage("obstacle6.png");
+  cacto1 = loadImage("assets/obstacle1.png");
+  cacto2 = loadImage("assets/obstacle2.png");
+  cacto3 = loadImage("assets/obstacle3.png");
+  cacto4 = loadImage("assets/obstacle4.png");
+  cacto5 = loadImage("assets/obstacle5.png");
+  cacto6 = loadImage("assets/obstacle6.png");
   
-  gameOverImg = loadImage("gameOver.png");
-  restartImg = loadImage("restart.png");
+  gameOverImg = loadImage("assets/gameOver.png");
+  restartImg = loadImage("assets/restart.png");
 }
 
 function setup() {
