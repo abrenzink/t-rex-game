@@ -1,18 +1,28 @@
+// game state variables
 var PLAY = 1;
 var END = 0;
 var gameState = PLAY;
 
+// t-rex sprite and images
 var trex, trex_running, trex_colision;
+
+// ground sprites and images
 var ground, invisibleGround, groundImg;
 
+// clouds group and images
 var cloudsGroup, cloudImg;
-var obstaclesGroup, cactus1, cactus2, cactus3, cactus4, cactus5, cactus6;
+//obstacles group and images
+var obstaclesGroup, obst1, obst2, obst3, obst4, obst5, obst6;
 
 var score = 0;
 
+// game over and restart buttons 
 var gameOver, restart;
 
+// sound variables
+var dieSound, jumpSound, checkpointSound;
 
+// here we load ani images and sounds to be used in the game
 function preload(){
   trex_running =   loadAnimation("assets/trex1.png","assets/trex2.png","assets/trex3.png");
   trex_colision = loadAnimation("assets/trex_collided.png");
@@ -21,15 +31,20 @@ function preload(){
   
   cloudImg = loadImage("assets/cloud.png");
   
-  cactus1 = loadImage("assets/obstacle1.png");
-  cactus2 = loadImage("assets/obstacle2.png");
-  cactus3 = loadImage("assets/obstacle3.png");
-  cactus4 = loadImage("assets/obstacle4.png");
-  cactus5 = loadImage("assets/obstacle5.png");
-  cactus6 = loadImage("assets/obstacle6.png");
+  obst1 = loadImage("assets/obstacle1.png");
+  obst2 = loadImage("assets/obstacle2.png");
+  obst3 = loadImage("assets/obstacle3.png");
+  obst4 = loadImage("assets/obstacle4.png");
+  obst5 = loadImage("assets/obstacle5.png");
+  obst6 = loadImage("assets/obstacle6.png");
   
   gameOverImg = loadImage("assets/gameOver.png");
   restartImg = loadImage("assets/restart.png");
+
+  dieSound = loadSound("assets/die.mp3");
+  jumpSound = loadSound("assets/jump.mp3");
+  checkpointSound = loadSound("assets/checkpoint.mp3");
+
 }
 
 function setup() {
@@ -75,11 +90,16 @@ function draw() {
   if (gameState === PLAY){
     score = score + Math.round(getFrameRate()/60);
     ground.velocityX = -(6 + 3*score/100);
+
+    if(score != 0 && score % 100 == 0){
+      checkpointSound.play();
+    }
  
     trex.changeAnimation("running", trex_running);
     
     if(keyDown("space") && trex.y >= 159) {
       trex.velocityY = -12;
+      jumpSound.play();
     }
   
     trex.velocityY = trex.velocityY + 0.8
@@ -94,6 +114,7 @@ function draw() {
   
     if(obstaclesGroup.isTouching(trex)){
         gameState = END;
+        dieSound.play();
     }
   }
   else if (gameState === END) {
@@ -146,17 +167,17 @@ function spawnObstacles() {
     //gere obstáculos aleatórios
     var rand = Math.round(random(1,6));
     switch(rand) {
-      case 1: cactus.addImage(cactus1);
+      case 1: cactus.addImage(obst1);
               break;
-      case 2: cactus.addImage(cactus2);
+      case 2: cactus.addImage(obst2);
               break;
-      case 3: cactus.addImage(cactus3);
+      case 3: cactus.addImage(obst3);
               break;
-      case 4: cactus.addImage(cactus4);
+      case 4: cactus.addImage(obst4);
               break;
-      case 5: cactus.addImage(cactus5);
+      case 5: cactus.addImage(obst5);
               break;
-      case 6: cactus.addImage(cactus6);
+      case 6: cactus.addImage(obst6);
               break;
       default: break;
     }
