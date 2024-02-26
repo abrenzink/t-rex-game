@@ -6,7 +6,7 @@ var trex, trex_running, trex_colision;
 var ground, invisibleGround, groundImg;
 
 var cloudsGroup, cloudImg;
-var cactiGroup, cactus1, cactus2, cactus3, cactus4, cactus5, cactus6;
+var obstaclesGroup, cactus1, cactus2, cactus3, cactus4, cactus5, cactus6;
 
 var score = 0;
 
@@ -38,8 +38,7 @@ function setup() {
   trex = createSprite(50,180,20,50);
   
   trex.addAnimation("running", trex_running);
-  trex.addAnimation("collided", trex_colision
-);
+  trex.addAnimation("collided", trex_colision);
   trex.scale = 0.5;
   
   ground = createSprite(200,180,400,20);
@@ -63,7 +62,7 @@ function setup() {
   invisibleGround.visible = false;
   
   cloudsGroup = new Group();
-  cactiGroup = new Group();
+  obstaclesGroup = new Group();
   
   score = 0;
 }
@@ -90,94 +89,97 @@ function draw() {
     }
   
     trex.collide(invisibleGround);
-    createClouds();
-    createCactus();
+    spawnClouds();
+    spawnObstacles();
   
-    if(cactiGroup.isTouching(trex)){
-        gameState
-       = END;
+    if(obstaclesGroup.isTouching(trex)){
+        gameState = END;
     }
   }
-  else if (gameState
-   === END) {
+  else if (gameState === END) {
     gameOver.visible = true;
     restart.visible = true;
     
     ground.velocityX = 0;
     trex.velocityY = 0;
-    cactiGroup.setVelocityXEach(0);
+    obstaclesGroup.setVelocityXEach(0);
     cloudsGroup.setVelocityXEach(0);
     
-    trex.changeAnimation("collided",trex_colision
-  );
+    trex.changeAnimation("collided", trex_colision);
     
-    cactiGroup.setLifetimeEach(-1);
+    obstaclesGroup.setLifetimeEach(-1);
     cloudsGroup.setLifetimeEach(-1);
     
-    // 01. IF clique no botao reset
+    if(mousePressedOver(restart)){
+      reset();
+    }
   }
-  
-  
+
   drawSprites();
 }
 
-function createClouds() {
+function spawnClouds() {
   
   if (frameCount % 60 === 0) {
-    var nuvem = createSprite(600,120,40,10);
-    nuvem.y = Math.round(random(80,120));
-    nuvem.addImage(cloudImg);
-    nuvem.scale = 0.5;
-    nuvem.velocityX = -3;
+    var cloud = createSprite(600,120,40,10);
+    cloud.y = Math.round(random(80,120));
+    cloud.addImage(cloudImg);
+    cloud.scale = 0.5;
+    cloud.velocityX = -3;
     
-    nuvem.lifetime = 200;
+    cloud.lifetime = 200;
     
-    nuvem.depth = trex.depth;
+    cloud.depth = trex.depth;
     trex.depth = trex.depth + 1;
     
-    cloudsGroup.add(nuvem);
+    cloudsGroup.add(cloud);
   }
   
 }
 
-function createCactus() {
+function spawnObstacles() {
   if(frameCount % 60 === 0) {
-    var cacto = createSprite(600,165,10,40);
+    var cactus = createSprite(600,165,10,40);
     //obstacle.debug = true;
-    cacto.velocityX = -(6 + 3*score/100);
+    cactus.velocityX = -(6 + 3*score/100);
     
     //gere obstáculos aleatórios
     var rand = Math.round(random(1,6));
     switch(rand) {
-      case 1: cacto.addImage(cactus1);
+      case 1: cactus.addImage(cactus1);
               break;
-      case 2: cacto.addImage(cactus2);
+      case 2: cactus.addImage(cactus2);
               break;
-      case 3: cacto.addImage(cactus3);
+      case 3: cactus.addImage(cactus3);
               break;
-      case 4: cacto.addImage(cactus4);
+      case 4: cactus.addImage(cactus4);
               break;
-      case 5: cacto.addImage(cactus5);
+      case 5: cactus.addImage(cactus5);
               break;
-      case 6: cacto.addImage(cactus6);
+      case 6: cactus.addImage(cactus6);
               break;
       default: break;
     }
     
          
-    cacto.scale = 0.5;
-    cacto.lifetime = 300;
+    cactus.scale = 0.5;
+    cactus.lifetime = 300;
     
-    cactiGroup.add(cacto);
+    obstaclesGroup.add(cactus);
   }
 }
 
 
 function reset(){
-  // 02. mudar gameState
+  gameState = PLAY;
+  gameOver.visible = false;
+  restart.visible = false;
 
-  // 03. destruir grupo cactos e nuvens
-  // 04. zerar pontuação
-  // 05. mudar visibilidade botao e gameOver
+  obstaclesGroup.destroyEach();
+  cloudsGroup.destroyEach();
+
+  trex.changeAnimation("running", trex_running);
+
+  score = 0;
 }
 
