@@ -52,6 +52,7 @@ function preload(){
 function setup() {
   // create the canvas (where sprites are displayed)
   createCanvas(600, 200);
+  frameRate(60);
 
   // create the t-rex object (or sprite) and define an image/animation for it
   trex = createSprite(50,180,20,50);  
