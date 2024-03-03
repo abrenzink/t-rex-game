@@ -75,6 +75,8 @@ class Game {
 
   setup() {
     createCanvas(600, 200);
+    frameRate(60);
+
 
     this.trex = createSprite(50, 180, 20, 50);
     this.trex.addAnimation("running", this.trex_running);
